@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: rikkeipay-assistant-tracing
+  ai:
+    openai:
+      api-key: "sk-proj-dummy-key-for-tracing-test"
+      chat:
+        options:
+          model: "gpt-4o-mini"
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics,prometheus,env,tracing"
+  tracing:
+    sampling:
+      probability: 1.0
+  otlp:
+    tracing:
+      endpoint: http://localhost:3000/api/public/otel/v1/traces
+      headers:
+        Authorization: "Basic cGstbGYtMTIzNDU2NzgtOTBhYi1jZGVmLTEyMzQtNTY3ODkwYWJjZGVmOnNrLWxmLTEyMzQ1Njc4LTkwYWItY2RlZi0xMjM0LTU2Nzg5MGFiY2RlZg=="
+      max-queue-size: 2048
+      schedule-delay: 5000ms
+      max-export-batch-size: 512
+      export-timeout: 10000ms
+      compression: none
+
+langfuse:
+  public-key: pk-lf-12345678-90ab-cdef-1234-567890abcdef
+  secret-key: sk-lf-12345678-90ab-cdef-1234-567890abcdef
+  host: http://localhost:3000
+
+logging:
+  level:
+    root: INFO
+    org.example.it213_session11_bai1: DEBUG
+    io.opentelemetry: DEBUG
+    io.micrometer.tracing: DEBUG
